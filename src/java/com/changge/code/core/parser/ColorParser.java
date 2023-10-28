@@ -29,8 +29,13 @@ public class ColorParser implements Parser {
     public Color parse(String s){
         Color color = null;
         if (s.startsWith("#")) {
-            int rgb = Integer.valueOf(s.substring(1),16);
-            color = new Color(rgb);
+            try {
+                int r = Integer.valueOf(s.substring(1,2),16);
+                int g = Integer.valueOf(s.substring(3,4),16);
+                int b = Integer.valueOf(s.substring(5,6),16);
+                color = new Color(r,g,b);
+            } catch (NumberFormatException e) {
+            }
         }else if(s.startsWith("rgb(")){
             s = s.replace("rgb(","").replace(")","").replace("rgba(","");
             String[] ses = s.split(",");
