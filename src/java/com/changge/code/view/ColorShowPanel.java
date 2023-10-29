@@ -12,6 +12,8 @@ public class ColorShowPanel  extends JPanel implements CComponent {
 
     MainWindow mainWindow;
 
+    private Color lastColor;
+
     private static final String ID = "color_show";
 
     @Override
@@ -21,22 +23,21 @@ public class ColorShowPanel  extends JPanel implements CComponent {
 
     public ColorShowPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        this.setVisible(true);
-        this.setBounds(0,0,34,34);
+        this.setPreferredSize(new Dimension(60,60));
         this.setBackground(DataDefault.defaultColor);
         this.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,60),1));
+        this.setVisible(true);
     }
 
-    public Color setBackgroundColor(Color color){
+    public void setBackgroundColor(Color color){
         Assert.isNotNull(color);
         Color originColor = this.getBackground();
         this.setBackground(color);
-        return originColor;
+        this.lastColor = originColor;
     }
 
     @Override
     public void resetColor(Color color) {
-        Color color1 = this.setBackgroundColor(color);
-        mainWindow.addColorRecord(color1);
+        this.setBackgroundColor(color);
     }
 }

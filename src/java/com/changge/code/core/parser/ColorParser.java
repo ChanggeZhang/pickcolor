@@ -1,11 +1,18 @@
 package com.changge.code.core.parser;
 
+import com.changge.code.core.exception.SystemException;
 import com.changge.code.utils.Assert;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.logging.Logger;
 
 public class ColorParser implements Parser {
+
+    private static final Logger log = Logger.getLogger(ColorParser.class.getName());
 
     public static String toColorString(Color color) {
         return "{\r\n" +
@@ -25,21 +32,21 @@ public class ColorParser implements Parser {
         return (b.length() == 1 ? ("0" + b) : b);
     }
 
-    @Override
-    public Color parse(String s){
+    public static Color parse(String s){
         Color color = null;
         if (s.startsWith("#")) {
             try {
-                int r = Integer.valueOf(s.substring(1,2),16);
-                int g = Integer.valueOf(s.substring(3,4),16);
-                int b = Integer.valueOf(s.substring(5,6),16);
+                int r = Integer.valueOf(s.substring(1,3),16);
+                int g = Integer.valueOf(s.substring(3,5),16);
+                int b = Integer.valueOf(s.substring(5,7),16);
                 color = new Color(r,g,b);
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
+                log.severe("颜色值不合法：" + s);
             }
         }else if(s.startsWith("rgb(")){
             s = s.replace("rgb(","").replace(")","").replace("rgba(","");
             String[] ses = s.split(",");
-            Assert.isTrue(ses.length != 3 && ses.length != 4,"颜色配置错误:{0}",s);
+            Assert.isTrue(ses.length == 3 || ses.length == 4,"颜色配置错误:{0}",s);
             if(ses.length == 3){
                 color = new Color(Integer.parseInt(ses[0].trim()),Integer.parseInt(ses[1].trim()),Integer.parseInt(ses[2].trim()));
             }else{
@@ -47,6 +54,15 @@ public class ColorParser implements Parser {
             }
         }
         return color;
+    }
+
+    @Override
+    public boolean parse(String val, Object target, Field field, Method setter) throws InvocationTargetException, IllegalAccessException {
+        Color color = parse(val);
+        if (color != null) {
+            setter.invoke(target,color);
+        }
+        return true;
     }
 
     @Override

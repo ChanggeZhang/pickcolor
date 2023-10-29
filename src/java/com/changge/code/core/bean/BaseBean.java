@@ -1,11 +1,15 @@
 package com.changge.code.core.bean;
 
+import com.changge.code.core.config.GlobalConfig;
 import com.changge.code.core.exception.SystemException;
 import com.changge.code.core.factory.ConfigFactory;
 import com.changge.code.core.parser.Parser;
 import com.changge.code.utils.Assert;
 import com.changge.code.view.MainWindow;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.*;
@@ -18,6 +22,27 @@ public class BaseBean {
 
     public static BaseBean getBaseBean() {
         return Bean.ME.getBaseBean();
+    }
+
+    public boolean parse(Object target, String val, Field field, Method setter) {
+        try {
+            Assert.isNotNull(target);
+            Assert.isNotNull(field);
+            Assert.isNotNull(setter);
+            Parser parser = this.iteratorParser(field.getType());
+            if(parser == null){
+                throw new SystemException(MessageFormat.format("不支持的数据类型序列化:{0}",field.getType().getName()));
+            }
+            return parser.parse(val,target,field,setter);
+        } catch (IllegalAccessException e) {
+            throw new SystemException("目标对象无法访问：" + e);
+        } catch (InvocationTargetException e) {
+            throw new SystemException("目标对象无法赋值：" + e);
+        } catch (NoSuchMethodException e) {
+            throw new SystemException("目标对象无法赋值：" + e);
+        } catch (InstantiationException e) {
+            throw new SystemException("目标对象无法创建：" + e);
+        }
     }
 
     public enum Bean{

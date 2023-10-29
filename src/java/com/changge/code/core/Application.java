@@ -3,7 +3,7 @@ package com.changge.code.core;
 import com.changge.code.core.bean.BaseBean;
 import com.changge.code.core.config.GlobalConfig;
 import com.changge.code.core.factory.GlobalConfigFactory;
-import com.changge.code.core.parser.ColorParser;
+import com.changge.code.core.parser.*;
 import com.changge.code.view.MainWindow;
 
 public class Application {
@@ -17,6 +17,10 @@ public class Application {
     private static <T> void loadAllBean(Class<T> startClass) {
         baseBean.registry(BaseBean.BeanContainerName.FACTORY,GlobalConfigFactory.class);
         baseBean.registry(BaseBean.BeanContainerName.PARSER, ColorParser.class);
+        baseBean.registry(BaseBean.BeanContainerName.PARSER, DateParser.class);
+        baseBean.registry(BaseBean.BeanContainerName.PARSER, CollectionParser.class);
+        baseBean.registry(BaseBean.BeanContainerName.PARSER, PrimitiveParser.class);
+        baseBean.registry(BaseBean.BeanContainerName.PARSER, CharSequenceParser.class);
     }
 
     private static BaseBean start(){

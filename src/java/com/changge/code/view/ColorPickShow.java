@@ -17,6 +17,8 @@ public class ColorPickShow extends JButton implements CComponent {
 
     MainWindow mainWindow;
 
+    int fontSize = 12;
+
     private static final String ID = "color_pick_show";
 
     Timer timer;
@@ -30,8 +32,16 @@ public class ColorPickShow extends JButton implements CComponent {
     public ColorPickShow(MainWindow mainWindow) {
         this.setVisible(true);
         this.mainWindow = mainWindow;
-        this.setBounds(0,(mainWindow.getHeight() / 2) + 10,getFont().getSize() * 8,(int)(getFont().getSize() * 2));
+        this.fontSize = mainWindow.fontSize;
+
+        this.setBounds(0,(mainWindow.getHeight() / 2) + 10,this.fontSize * 8,(int)(this.fontSize * 2));
         this.setText("获取颜色");
+        this.setToolTipText("点击开始获取屏幕颜色，再次点击结束获取，并自动复制进粘贴板，直接粘贴即可使用");
+        final Color color = new Color(0,171,255);
+        this.setBackground(color);
+        this.setForeground(new Color(255,255,255));
+        this.setFont(new Font("黑体",Font.BOLD,(int)(this.fontSize * 1.2)));
+        this.setBorderPainted(false);
         this.robot = createRobot();
         this.addMouseListener(new MouseListener() {
             @Override

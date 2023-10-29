@@ -5,6 +5,7 @@ import com.changge.code.data.DataDefault;
 import com.changge.code.utils.Assert;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -13,24 +14,41 @@ public class TenShow extends JPanel  implements CComponent{
 
     MainWindow mainWindow;
 
-    GlobalConfig globalConfig = GlobalConfig.instance();
-
     private static final String ID = "ten_show";
 
-    TextField red = new TextField("red");
-    TextField green = new TextField("green");
-    TextField blue = new TextField("blue");
+    JTextField red = new JTextField("red");
+    JTextField green = new JTextField("green");
+    JTextField blue = new JTextField("blue");
+    
+    int fontSize = 12;
 
     public TenShow(MainWindow mainWindow) {
         Assert.isNotNull(mainWindow);
         this.setVisible(true);
         this.mainWindow = mainWindow;
-        this.setBounds(globalConfig.getWidth() / 3 + 20,0,getFont().getSize() * 8,getFont().getSize() + 10);
+        this.fontSize = this.mainWindow.fontSize;
+        this.setSize(new Dimension(this.fontSize * 12,2*this.fontSize));
+        this.initComponents();
+        this.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+        this.setColor(null);
+    }
+
+    private void initComponents() {
+        Border border = BorderFactory.createEmptyBorder();
+        Dimension rgbArea = new Dimension((int)(2.7*this.fontSize),2*this.fontSize);
+        red.setPreferredSize(rgbArea);
+        green.setPreferredSize(rgbArea);
+        blue.setPreferredSize(rgbArea);
+        red.setBorder(border);
+        green.setBorder(border);
+        blue.setBorder(border);
+        JLabel label = new JLabel("RGB：",SwingConstants.RIGHT);
+        label.setPreferredSize(new Dimension(this.fontSize * 5,2*this.fontSize));
+        this.add(label);
         this.add("rgb",red);
         this.add("green",green);
         this.add("blue",blue);
-        this.setColor(null);
-
+        this.addEvent();
     }
 
     public void setColor(Color color){

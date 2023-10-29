@@ -26,21 +26,33 @@ public final class GlobalConfig {
 
     private String icon;
 
-    private Integer width = 234;
-
-    private Integer height = 134;
-
     private Color background;
 
     private Image backgroundImage;
 
     private String title;
 
+    private int fontSize = 12;
+
+    private Integer width = 270;
+
+    private Integer height = 155;
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+        this.setWidth(this.fontSize * 22);
+        this.setHeight(this.fontSize * 12);
+    }
+
     public Integer getWidth() {
         return width;
     }
 
-    public void setWidth(Integer width) {
+    private void setWidth(Integer width) {
         this.width = width;
     }
 
@@ -48,7 +60,7 @@ public final class GlobalConfig {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    private void setHeight(Integer height) {
         this.height = height;
     }
 
