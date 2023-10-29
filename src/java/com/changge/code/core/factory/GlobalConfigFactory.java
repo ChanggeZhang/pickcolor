@@ -50,18 +50,18 @@ public class GlobalConfigFactory<T> implements ConfigFactory<T> {
         for (int i = 0; i < split.length; i++) {
             String s = split[i];
             if (StrUtils.isNotBlank(s) && !s.startsWith("##")){
-                Assert.contains(s,"=","配置文件出错,项目配置只支持【K=V】的结构，实际上:{0}，错误行数:{1}",s,i + 1);
-                String[] kv = s.split("=");
-                Assert.isTrue(kv.length == 2,"配置文件出错,项目配置只支持【K=V】的结构，实际上:{0}，错误行数:{1}",s,i + 1);
-                Assert.isNotBlank(kv[0]);
-                if(StrUtils.isNotBlank(kv[1])){
-                    try {
-                        Field field = FieldUtil.findField(clazz,kv[0]);
-                        Method method = clazz.getMethod(StrUtils.buildSetName(field),field.getType());
-                        baseBean.parse(globalConfig,kv[1],field,method);
-                    } catch (Exception e) {
-                        throw new SystemException("配置初始化失败",e);
-                    }
+                int index = s.indexOf("=");
+                Assert.isTrue(index > 1,"=","配置文件出错,项目配置只支持【K=V】的结构，实际上:{0}，错误行数:{1}",s,i + 1);
+                if(index < 0 || index >= s.length()) continue;
+                String key = s.substring(0,index);
+                String val = s.substring(index + 1);
+                if(StrUtils.isBlank(key) || StrUtils.isBlank(val)) continue;
+                try {
+                    Field field = FieldUtil.findField(clazz,key.trim());
+                    Method method = clazz.getMethod(StrUtils.buildSetName(field),field.getType());
+                    baseBean.parse(globalConfig,val.trim(),field,method);
+                } catch (Exception e) {
+                    throw new SystemException("配置初始化失败",e);
                 }
             }
         }

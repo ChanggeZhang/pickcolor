@@ -1,6 +1,7 @@
 package com.changge.code.core.config;
 
 
+import com.changge.code.data.DataDefault;
 import com.changge.code.utils.StrUtils;
 
 import java.awt.*;
@@ -24,13 +25,13 @@ public final class GlobalConfig {
     }
     //endregion
 
-    private String icon;
+    private String icon = "classpath:images/icon.png";
 
-    private Color background;
+    private Color background = DataDefault.defaultColor;
 
     private Image backgroundImage;
 
-    private String title;
+    private String title = "颜色拾取器";
 
     private int fontSize = 12;
 

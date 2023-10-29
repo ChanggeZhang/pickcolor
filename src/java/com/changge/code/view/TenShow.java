@@ -1,6 +1,7 @@
 package com.changge.code.view;
 
 import com.changge.code.core.config.GlobalConfig;
+import com.changge.code.core.parser.ColorParser;
 import com.changge.code.data.DataDefault;
 import com.changge.code.utils.Assert;
 
@@ -26,6 +27,7 @@ public class TenShow extends JPanel  implements CComponent{
         Assert.isNotNull(mainWindow);
         this.setVisible(true);
         this.mainWindow = mainWindow;
+        this.setOpaque(false);
         this.fontSize = this.mainWindow.fontSize;
         this.setSize(new Dimension(this.fontSize * 12,2*this.fontSize));
         this.initComponents();
@@ -44,6 +46,7 @@ public class TenShow extends JPanel  implements CComponent{
         blue.setBorder(border);
         JLabel label = new JLabel("RGB：",SwingConstants.RIGHT);
         label.setPreferredSize(new Dimension(this.fontSize * 5,2*this.fontSize));
+        label.setBackground(this.mainWindow.getBackground());
         this.add(label);
         this.add("rgb",red);
         this.add("green",green);

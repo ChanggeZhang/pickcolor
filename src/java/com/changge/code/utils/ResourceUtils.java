@@ -37,6 +37,8 @@ public class ResourceUtils {
         uri = uri.trim();
         if (uri.startsWith(LocationPrefix.CLASSPATH.getPrefix())) {
             return GlobalConfig.class.getClassLoader().getResourceAsStream(uri.replace(LocationPrefix.CLASSPATH.getPrefix(),""));
+        }else if(uri.startsWith(LocationPrefix.HTTP.getPrefix()) || uri.startsWith(LocationPrefix.HTTPS.getPrefix())){
+            return HttpUtil.get(uri);
         }else if(isAbsolute(uri)){
             return new FileInputStream(uri);
         }

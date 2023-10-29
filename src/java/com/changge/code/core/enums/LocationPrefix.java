@@ -1,7 +1,9 @@
 package com.changge.code.core.enums;
 
 public enum LocationPrefix {
-    CLASSPATH("classpath:");
+    CLASSPATH("classpath:"),
+    HTTP("http:"),
+    HTTPS("https:");
 
     private String prefix;
 

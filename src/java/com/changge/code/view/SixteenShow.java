@@ -26,6 +26,7 @@ public class SixteenShow extends JPanel  implements CComponent{
     }
     public SixteenShow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+        this.setOpaque(false);
         this.fontSize = this.mainWindow.fontSize;
         textField.addFocusListener(new FocusListener() {
             @Override
@@ -40,6 +41,7 @@ public class SixteenShow extends JPanel  implements CComponent{
         });
         JLabel label = new JLabel("16进制：",SwingConstants.RIGHT);
         label.setPreferredSize(new Dimension(this.fontSize * 5,2*this.fontSize));
+        label.setBackground(this.mainWindow.getBackground());
         this.add(label);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         Border border = BorderFactory.createEmptyBorder();

@@ -16,8 +16,8 @@ public class ColorParser implements Parser {
 
     public static String toColorString(Color color) {
         return "{\r\n" +
-                "   \"rgb\": rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "),\r\n" +
-                "   \"hex\": #" + toHexString(color) + "\r\n" +
+                "   \"rgb\": \"rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ")\",\r\n" +
+                "   \"hex\": \"#" + toHexString(color) + "\"\r\n" +
                 "}";
     }
 
@@ -44,14 +44,15 @@ public class ColorParser implements Parser {
                 log.severe("颜色值不合法：" + s);
             }
         }else if(s.startsWith("rgb(")){
-            s = s.replace("rgb(","").replace(")","").replace("rgba(","");
+            s = s.replace("rgb(","").replace(")","");
             String[] ses = s.split(",");
-            Assert.isTrue(ses.length == 3 || ses.length == 4,"颜色配置错误:{0}",s);
-            if(ses.length == 3){
-                color = new Color(Integer.parseInt(ses[0].trim()),Integer.parseInt(ses[1].trim()),Integer.parseInt(ses[2].trim()));
-            }else{
-                color = new Color(Integer.parseInt(ses[0].trim()),Integer.parseInt(ses[1].trim()),Integer.parseInt(ses[2].trim()),Integer.parseInt(ses[3].trim()));
-            }
+            Assert.isTrue(ses.length == 3,"颜色配置错误:{0}",s);
+            color = new Color(Integer.parseInt(ses[0].trim()),Integer.parseInt(ses[1].trim()),Integer.parseInt(ses[2].trim()));
+        }else if(s.startsWith("rgba(")){
+            s = s.replace(")","").replace("rgba(","");
+            String[] ses = s.split(",");
+            Assert.isTrue(ses.length == 4,"颜色配置错误:{0}",s);
+            color = new Color(Integer.parseInt(ses[0].trim()),Integer.parseInt(ses[1].trim()),Integer.parseInt(ses[2].trim()),Integer.parseInt(ses[3].trim()));
         }
         return color;
     }
@@ -68,5 +69,9 @@ public class ColorParser implements Parser {
     @Override
     public boolean support(Class<?> type) {
         return Color.class.isAssignableFrom(type);
+    }
+
+    public static Color diffColor(Color color){
+        return new Color(255 - color.getRed(),255 - color.getGreen(), 255 - color.getBlue());
     }
 }

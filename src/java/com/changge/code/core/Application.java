@@ -20,6 +20,7 @@ public class Application {
         baseBean.registry(BaseBean.BeanContainerName.PARSER, DateParser.class);
         baseBean.registry(BaseBean.BeanContainerName.PARSER, CollectionParser.class);
         baseBean.registry(BaseBean.BeanContainerName.PARSER, PrimitiveParser.class);
+        baseBean.registry(BaseBean.BeanContainerName.PARSER, ImageParser.class);
         baseBean.registry(BaseBean.BeanContainerName.PARSER, CharSequenceParser.class);
     }
 
