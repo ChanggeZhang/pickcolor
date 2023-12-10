@@ -1,6 +1,7 @@
 package com.changge.code.core.config;
 
 
+import com.changge.code.core.annotation.Alias;
 import com.changge.code.data.DataDefault;
 import com.changge.code.utils.StrUtils;
 
@@ -29,6 +30,7 @@ public final class GlobalConfig {
 
     private Color background = DataDefault.defaultColor;
 
+    @Alias("background")
     private Image backgroundImage;
 
     private String title = "颜色拾取器";

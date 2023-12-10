@@ -5,6 +5,8 @@ import com.changge.code.core.exception.SystemException;
 import com.changge.code.core.parser.ColorParser;
 import com.changge.code.data.DataDefault;
 import com.changge.code.utils.StreamUtil;
+import com.changge.code.utils.ToolkitUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -110,8 +112,7 @@ public class MainWindow extends JFrame {
         JComponent component = (JComponent)this.components.get("colorPanel");
         Color color = component.getBackground();
         String text = ColorParser.toColorString(color);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text),null);
-        JOptionPane.showMessageDialog(this,"颜色值已复制到粘贴板，直接粘贴即可使用","提示", JOptionPane.INFORMATION_MESSAGE);
+        ToolkitUtils.copy(text);
     }
 
 }

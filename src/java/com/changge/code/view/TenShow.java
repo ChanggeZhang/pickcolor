@@ -1,15 +1,19 @@
 package com.changge.code.view;
 
 import com.changge.code.core.config.GlobalConfig;
+import com.changge.code.core.enums.MouseClick;
 import com.changge.code.core.parser.ColorParser;
 import com.changge.code.data.DataDefault;
 import com.changge.code.utils.Assert;
+import com.changge.code.utils.ToolkitUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class TenShow extends JPanel  implements CComponent{
 
@@ -33,6 +37,35 @@ public class TenShow extends JPanel  implements CComponent{
         this.initComponents();
         this.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
         this.setColor(null);
+        this.setToolTipText("单击鼠标右键复制rgb颜色值");
+        this.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getButton() == MouseClick.RIGHT_CLICK.getCode()){
+                    copyColor(e);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
 
     private void initComponents() {
@@ -52,6 +85,14 @@ public class TenShow extends JPanel  implements CComponent{
         this.add("green",green);
         this.add("blue",blue);
         this.addEvent();
+    }
+
+    private void copyColor(MouseEvent e) {
+        String red = this.red.getText();
+        String green = this.green.getText();
+        String blue = this.blue.getText();
+        String color = String.format("rgb(%s,%s,%s)", red,green,blue);
+        ToolkitUtils.copy(color);
     }
 
     public void setColor(Color color){

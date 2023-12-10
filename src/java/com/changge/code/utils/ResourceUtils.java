@@ -6,6 +6,7 @@ import com.changge.code.core.exception.SystemException;
 
 import java.io.*;
 import java.text.MessageFormat;
+import java.util.Base64;
 import java.util.Properties;
 
 public class ResourceUtils {
@@ -41,6 +42,10 @@ public class ResourceUtils {
             return HttpUtil.get(uri);
         }else if(isAbsolute(uri)){
             return new FileInputStream(uri);
+        }else if(uri.startsWith("data:image/")){
+            String base64Str = uri.split(",")[1];
+            byte[] buffer = Base64.getDecoder().decode(base64Str);
+            return new ByteArrayInputStream(buffer);
         }
         return new FileInputStream(uri);
     }

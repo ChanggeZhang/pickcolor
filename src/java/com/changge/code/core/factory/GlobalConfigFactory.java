@@ -4,24 +4,16 @@ import com.changge.code.core.annotation.AppConfig;
 import com.changge.code.core.bean.BaseBean;
 import com.changge.code.core.config.GlobalConfig;
 import com.changge.code.core.exception.SystemException;
-import com.changge.code.core.parser.ColorParser;
 import com.changge.code.utils.*;
-import sun.reflect.FieldAccessor;
 
 import java.awt.*;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-
-import static com.changge.code.core.parser.ColorParser.parse;
+import java.util.List;
 
 public class GlobalConfigFactory<T> implements ConfigFactory<T> {
 
@@ -56,12 +48,15 @@ public class GlobalConfigFactory<T> implements ConfigFactory<T> {
                 String key = s.substring(0,index);
                 String val = s.substring(index + 1);
                 if(StrUtils.isBlank(key) || StrUtils.isBlank(val)) continue;
-                try {
-                    Field field = FieldUtil.findField(clazz,key.trim());
-                    Method method = clazz.getMethod(StrUtils.buildSetName(field),field.getType());
-                    baseBean.parse(globalConfig,val.trim(),field,method);
-                } catch (Exception e) {
-                    throw new SystemException("配置初始化失败",e);
+                List<Field> fields = FieldUtil.findFields(clazz,key.trim());
+                if(CollUtils.isEmpty(fields)) continue;
+                for (Field field : fields) {
+                    try {
+                        Method method = clazz.getMethod(StrUtils.buildSetName(field),field.getType());
+                        baseBean.parse(globalConfig,val.trim(),field,method);
+                    } catch (Exception e) {
+                        throw new SystemException("配置初始化失败",e);
+                    }
                 }
             }
         }
