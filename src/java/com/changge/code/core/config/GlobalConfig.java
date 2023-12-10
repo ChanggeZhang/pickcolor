@@ -26,7 +26,7 @@ public final class GlobalConfig {
     }
     //endregion
 
-    private String icon = "classpath:images/icon.png";
+    private String icon = "classpath:images/icon.ico";
 
     private Color background = DataDefault.defaultColor;
 

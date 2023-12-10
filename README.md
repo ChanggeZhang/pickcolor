@@ -31,7 +31,7 @@
 title=pickcolor
 
 ### 程序图标
-icon=classpath:images/icon.png
+icon=classpath:images/icon.ico
 
 ### 背景，如果是base64或者image://开头则是背景图片，否则将按照图片处理
 ### 背景图片，支持指定本地图片，base64和网络图片，网络图片仅支持http和https
