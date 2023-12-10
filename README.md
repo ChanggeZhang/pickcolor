@@ -36,9 +36,6 @@ icon=classpath:images/icon.png
 ### 背景，如果是base64或者image://开头则是背景图片，否则将按照图片处理
 background=#dedede
 
-### 背景图片，支持指定本地图片和网络图片，网络图片仅支持http和https
-backgroundImage=https://tse1-mm.cn.bing.net/th/id/OIP-C.g9UbVfyVZX-SfD09JcYr5QHaEK?pid=ImgDet&rs=1
-
 ### 默认字体大小
 fontSize=12
 ```
