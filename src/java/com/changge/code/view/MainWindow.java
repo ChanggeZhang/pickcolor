@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
         JPanel colorTextPanel = new JPanel();
         colorTextPanel.setLayout(new FlowLayout());
         colorTextPanel.setFont(new Font("宋体",Font.BOLD,this.fontSize));
-        colorTextPanel.setPreferredSize(new Dimension(15*this.fontSize, 6 * this.fontSize));
+        colorTextPanel.setPreferredSize(new Dimension(17*this.fontSize, 6 * this.fontSize));
         colorTextPanel.add((JComponent)components.get("tenShow"));
         colorTextPanel.add((JComponent)components.get("sixteenShow"));
         colorTextPanel.setOpaque(false);

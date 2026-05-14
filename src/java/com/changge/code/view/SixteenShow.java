@@ -46,7 +46,7 @@ public class SixteenShow extends JPanel  implements CComponent{
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         Border border = BorderFactory.createEmptyBorder();
         textField.setBorder(border);
-        textField.setPreferredSize(new Dimension(this.fontSize * 9,this.fontSize * 2));
+        textField.setPreferredSize(new Dimension(this.fontSize * 11,this.fontSize * 2));
         this.add(textField);
         this.setVisible(true);
         this.setSize(this.fontSize * 12,this.fontSize * 2);
@@ -93,7 +93,7 @@ public class SixteenShow extends JPanel  implements CComponent{
         if(color == null){
             color = DataDefault.defaultColor;
         }
-        this.mainWindow.resetColor(color,this.ID);
+        this.mainWindow.resetColor(color, ID);
     }
 
     @Override

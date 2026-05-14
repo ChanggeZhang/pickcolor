@@ -37,7 +37,7 @@ public final class GlobalConfig {
 
     private int fontSize = 12;
 
-    private Integer width = 270;
+    private Integer width = 330;
 
     private Integer height = 155;
 
@@ -47,7 +47,7 @@ public final class GlobalConfig {
 
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
-        this.setWidth(this.fontSize * 22);
+        this.setWidth(this.fontSize * 24);
         this.setHeight(this.fontSize * 12);
     }
 
