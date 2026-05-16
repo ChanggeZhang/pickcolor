@@ -22,7 +22,7 @@ public class ColorPickShow extends JButton implements CComponent {
 
     MainWindow mainWindow;
 
-    int fontSize = 12;
+    int fontSize;
 
     private static final String ID = "color_pick_show";
 
@@ -46,14 +46,11 @@ public class ColorPickShow extends JButton implements CComponent {
         this.setFont(new Font("黑体",Font.BOLD,(int)(this.fontSize * 1.2)));
         this.setBorderPainted(false);
         this.robot = createRobot();
-        this.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!picking){
-                    startPick();
-                }else{
-                    cancelTimeTask();
-                }
+        this.addActionListener(e -> {
+            if(!picking){
+                startPick();
+            }else{
+                cancelTimeTask();
             }
         });
     }

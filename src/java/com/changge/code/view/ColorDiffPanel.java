@@ -6,7 +6,7 @@ import com.changge.code.utils.Assert;
 import javax.swing.*;
 import java.awt.*;
 
-public class ColorShowPanel  extends JPanel implements CComponent {
+public class ColorDiffPanel extends JPanel implements CComponent {
 
 
 
@@ -14,20 +14,20 @@ public class ColorShowPanel  extends JPanel implements CComponent {
 
     private Color lastColor;
 
-    private static final String ID = "color_show";
+    private static final String ID = "color_diff";
 
     @Override
     public String getID() {
         return ID;
     }
 
-    public ColorShowPanel(MainWindow mainWindow) {
+    public ColorDiffPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-//        this.setPreferredSize(new Dimension(50,50));
+//        this.setPreferredSize(new Dimension(60,60));
         // 这里的bounds在父类无效，需要在父类设置才能在父类中有效
-//        this.setBounds(0,0,50,50);
+//        this.setBounds(0,0,60,60);
         this.setBackground(DataDefault.defaultColor);
-//        this.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,50),1));
+//        this.setBorder(BorderFactory.createLineBorder(new Color(0,0,0,60),1));
         this.setVisible(true);
     }
 
@@ -37,11 +37,6 @@ public class ColorShowPanel  extends JPanel implements CComponent {
         this.setBackground(color);
         this.lastColor = originColor;
         this.repaint();
-    }
-
-    @Override
-    public void resetColor(Color color) {
-        this.setBackgroundColor(color);
     }
 
     /**

@@ -47,10 +47,29 @@ public class MainWindow extends JFrame {
         this.setForeground(ColorParser.diffColor(this.getBackground()));
         this.jp.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
         this.components.put("colorPanel",new ColorShowPanel(this));
+        this.components.put("color_diff",new ColorDiffPanel(this));
         this.components.put("colorPick",new ColorPickShow(this));
         this.components.put("tenShow",new TenShow(this));
         this.components.put("sixteenShow",new SixteenShow(this));
-        this.jp.add((JComponent)components.get("colorPanel"));
+        this.components.put("set_background_color",new SetBackgroundColor( this));
+
+        JPanel previewPanel = new JPanel();
+        previewPanel.setLayout(null);
+        previewPanel.setPreferredSize(new Dimension(60,60));
+
+        // 获取两个子组件
+        JComponent colorShow = (JComponent) components.get("colorPanel"); // 大的 60x60
+        JComponent colorDiff = (JComponent) components.get("color_diff"); // 小的 40x40
+        colorShow.setBounds(10,10,50,50);
+        colorDiff.setBounds(0,0,60,60);
+//        colorShow.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        colorShow.setAlignmentY(Component.CENTER_ALIGNMENT);
+//        colorDiff.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        colorDiff.setAlignmentY(Component.CENTER_ALIGNMENT);
+        previewPanel.add(colorShow);
+        previewPanel.add(colorDiff);
+
+        this.jp.add(previewPanel);
 
         JPanel colorTextPanel = new JPanel();
         colorTextPanel.setLayout(new FlowLayout());
@@ -64,6 +83,7 @@ public class MainWindow extends JFrame {
         buttonPanel.setOpaque(false);
         buttonPanel.add((JComponent)components.get("colorPick"));
         this.jp.add(buttonPanel);
+        this.jp.add((JComponent)components.get("set_background_color"));
         this.con.add(this.jp);
         this.resetColor(DataDefault.defaultColor,"");
     }
@@ -115,4 +135,10 @@ public class MainWindow extends JFrame {
         ToolkitUtils.copy(text);
     }
 
+    public void setAsBgColor() {
+        JComponent component = (JComponent)this.components.get("colorPanel");
+        ColorDiffPanel colorDiff = (ColorDiffPanel)this.components.get("color_diff");
+        Color color = component.getBackground();
+        colorDiff.setBackgroundColor(color);
+    }
 }
