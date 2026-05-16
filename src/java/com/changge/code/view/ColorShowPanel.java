@@ -18,7 +18,7 @@ public class ColorShowPanel  extends JPanel implements CComponent {
 
     @Override
     public String getID() {
-        return this.ID;
+        return ID;
     }
 
     public ColorShowPanel(MainWindow mainWindow) {
@@ -34,10 +34,21 @@ public class ColorShowPanel  extends JPanel implements CComponent {
         Color originColor = this.getBackground();
         this.setBackground(color);
         this.lastColor = originColor;
+        this.repaint();
     }
 
     @Override
     public void resetColor(Color color) {
         this.setBackgroundColor(color);
+    }
+
+    /**
+     * swing 默认不会擦除原有内容，需要售罄清除
+     * @param g the <code>Graphics</code> object to protect
+     */
+    @Override
+    public void paintComponent(Graphics g){
+        g.clearRect(0,0,this.getWidth(),this.getHeight());
+        super.paintComponent(g);
     }
 }

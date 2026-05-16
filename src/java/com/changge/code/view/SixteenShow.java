@@ -22,7 +22,7 @@ public class SixteenShow extends JPanel  implements CComponent{
 
     @Override
     public String getID() {
-        return this.ID;
+        return ID;
     }
     public SixteenShow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;

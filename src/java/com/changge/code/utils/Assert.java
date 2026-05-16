@@ -1,7 +1,9 @@
 package com.changge.code.utils;
 
 import com.changge.code.core.exception.SystemException;
+import com.changge.code.core.parser.ColorParser;
 
+import java.awt.*;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
@@ -128,4 +130,16 @@ public class Assert {
         if(b) throw new SystemException(MessageFormat.format(message,args));
     }
     //endregion
+
+    public static void validRgb(String s){
+        Assert.isTrue(ColorParser.validRgb(s),"RGB色织不正确");
+    }
+
+    public static void validRgba(String s){
+        Assert.isTrue(ColorParser.validRgba(s),"RGBA格式不正确");
+    }
+
+    public static void validHexColor(String s){
+        Assert.isTrue(ColorParser.validHexColor(s),"HEX色值格式不正确");
+    }
 }

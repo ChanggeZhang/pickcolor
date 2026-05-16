@@ -1,6 +1,5 @@
 package com.changge.code.view;
 
-import com.changge.code.core.config.GlobalConfig;
 import com.changge.code.core.enums.MouseClick;
 import com.changge.code.core.parser.ColorParser;
 import com.changge.code.data.DataDefault;
@@ -26,7 +25,7 @@ public class TenShow extends JPanel  implements CComponent{
     JTextField blue = new JTextField("blue");
     JTextField alpha = new JTextField("alpha");
 
-    int fontSize = 12;
+    int fontSize;
 
     public TenShow(MainWindow mainWindow) {
         Assert.isNotNull(mainWindow);
@@ -43,7 +42,7 @@ public class TenShow extends JPanel  implements CComponent{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getButton() == MouseClick.RIGHT_CLICK.getCode()){
-                    copyColor(e);
+                    copyColor();
                 }
             }
 
@@ -91,13 +90,18 @@ public class TenShow extends JPanel  implements CComponent{
         this.addEvent();
     }
 
-    private void copyColor(MouseEvent e) {
+    private void copyColor() {
         String red = this.red.getText();
         String green = this.green.getText();
         String blue = this.blue.getText();
         String alpha = this.alpha.getText();
-        String color = String.format("rgb(%s, %s, %s)\r\nrgba(%s, %s, %s, %s)", red,green,blue, red,green,blue,alpha);
-        ToolkitUtils.copy(color);
+        String copied = "";
+        if (ColorParser.forColorAlpha(Double.parseDouble(alpha)) != 255) {
+            copied = String.format("rgba(%s, %s, %s, %s)", red,green,blue,alpha);
+        }else{
+            copied = String.format("rgb(%s, %s, %s)",red,green,blue);
+        }
+        ToolkitUtils.copy(copied);
     }
 
     public void setColor(Color color){
@@ -107,47 +111,46 @@ public class TenShow extends JPanel  implements CComponent{
         red.setText(color.getRed() + "");
         green.setText(color.getGreen() + "");
         blue.setText(color.getBlue() + "");
-        alpha.setText(ColorParser.forShowAlpha(color.getAlpha()) + "");
+        alpha.setText(ColorParser.forShowAlpha(color.getAlpha()));
     }
 
     public void addEvent(){
-        registFocusEvent(red);
-        registFocusEvent(green);
-        registFocusEvent(blue);
-        registFocusEvent(alpha);
-//        registPasteEvent(red);
-//        registPasteEvent(green);
-//        registPasteEvent(blue);
-//        registPasteEvent(alpha);
+        registryFocusEvent(red);
+        registryFocusEvent(green);
+        registryFocusEvent(blue);
+        registryFocusEvent(alpha);
+        registryPasteEvent(red);
+        registryPasteEvent(green);
+        registryPasteEvent(blue);
+        registryPasteEvent(alpha);
     }
 
-//    private void registPasteEvent(JTextField red) {
-//        // 给 textField 添加 Ctrl+V 监听
-//        red.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "paste");
-//        red.getActionMap().put("paste", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // 获取剪贴板内容
-//                String content = null;
-//                try {
-//                    content = Toolkit.getDefaultToolkit().getSystemClipboard()
-//                            .getContents(null).getTransferData(DataFlavor.stringFlavor).toString();
-//                } catch (UnsupportedFlavorException ex) {
-//                    throw new RuntimeException(ex);
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                // 处理 content，比如解析 rgb(…) 并更新预览
-//                Color color = ColorParser.parse(content);
-//                if(color == null){
-//                    return;
-//                }
-//                mainWindow.resetColor(color,"");
-//            }
-//        });
-//    }
+    private void registryPasteEvent(JTextField red) {
+        // 给 textField 添加 Ctrl+V 监听
+        red.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "paste");
+        red.getActionMap().put("paste", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 获取剪贴板内容
+                Object content;
+                try {
+                    content = Toolkit.getDefaultToolkit().getSystemClipboard()
+                            .getContents(null).getTransferData(DataFlavor.stringFlavor);
+                } catch (UnsupportedFlavorException | IOException ex) {
+                    System.err.println("内容粘贴出错：" + ex.getMessage());
+                    return;
+                }
+                // 处理 content，比如解析 rgb(…) 并更新预览
+                Color color = ColorParser.parse(content.toString());
+                if(color == null){
+                    return;
+                }
+                mainWindow.resetColor(color,"");
+            }
+        });
+    }
 
-    private void registFocusEvent(JTextField red) {
+    private void registryFocusEvent(JTextField red) {
         red.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -160,7 +163,6 @@ public class TenShow extends JPanel  implements CComponent{
             }
         });
     }
-
 
     private void focusLose(){
         int r = Integer.parseInt(this.red.getText());

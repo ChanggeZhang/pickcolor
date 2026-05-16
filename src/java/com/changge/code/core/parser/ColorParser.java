@@ -15,9 +15,17 @@ public class ColorParser implements Parser {
     private static final Logger log = Logger.getLogger(ColorParser.class.getName());
 
     public static String toColorString(Color color) {
-        return "rgb(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ")\r\n" +
-                "rgba(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ", " + forShowAlpha(color.getAlpha()) + ")\r\n" +
-                "#" + toHexString(color);
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+        int alpha = color.getAlpha();
+        String copied = "";
+        if (alpha != 255) {
+            copied = String.format("rgba(%s, %s, %s, %s)", red,green,blue,alpha);
+        }else{
+            copied = String.format("rgb(%s, %s, %s)",red,green,blue);
+        }
+        return copied + "\r\n#" + toHexString(color);
     }
 
     public static String forShowAlpha(int alpha) {
@@ -29,10 +37,15 @@ public class ColorParser implements Parser {
     }
 
     public static String toHexString(Color color) {
+        String a = "";
+        int a_int = color.getAlpha();
+        if (a_int != 255) {
+            a = Integer.toHexString(color.getAlpha());
+        }
         String r = Integer.toHexString(color.getRed());
         String g = Integer.toHexString(color.getGreen());
         String b = Integer.toHexString(color.getBlue());
-        return padding(r) + padding(g) + padding(b);
+        return padding(a) + padding(r) + padding(g) + padding(b);
     }
 
     private static String padding(String b) {
@@ -43,12 +56,11 @@ public class ColorParser implements Parser {
         Color color = null;
         if (s.startsWith("#")) {
             try {
-                int r = Integer.valueOf(s.substring(1,3),16);
-                int g = Integer.valueOf(s.substring(3,5),16);
-                int b = Integer.valueOf(s.substring(5,7),16);
-                color = new Color(r,g,b);
+                int[] rgba = hexToRgba(s);
+                color = new Color(rgba[0],rgba[1],rgba[2],rgba[3]);
             } catch (Exception e) {
                 log.severe("颜色值不合法：" + s);
+                throw new SystemException("颜色值不合法：" + s);
             }
         }else if(s.startsWith("rgb(") || validRgb(s)){
             s = s.replace("rgb(","").replace(")","");
@@ -64,7 +76,7 @@ public class ColorParser implements Parser {
         return color;
     }
 
-    private static boolean validRgba(String s) {
+    public static boolean validRgba(String s) {
         String[] srgba = s.split(",");
         if(srgba.length == 4){
             return validRgb(new String[]{srgba[0], srgba[1], srgba[2]}) && validAlpha(srgba[3]);
@@ -72,7 +84,7 @@ public class ColorParser implements Parser {
         return false;
     }
 
-    private static boolean validRgb(String s) {
+    public static boolean validRgb(String s) {
         String[] srgb = s.split(",");
         return validRgb(srgb);
     }
@@ -95,6 +107,38 @@ public class ColorParser implements Parser {
 
     private static boolean validAlpha(String s) {
         return s.matches("\\d+(\\.\\d+)?") && Double.parseDouble(s) >= 0 && Double.parseDouble(s) <= 1;
+    }
+
+    public static boolean validHexColor(String s){
+        boolean v = false;
+        if (s.startsWith("#")) {
+            try {
+                hexToRgba(s);
+            } catch (Exception e) {
+                System.err.println("颜色格式错误：" + s);
+            }
+        }
+        return v;
+    }
+
+    /**
+     *
+     * @param hex
+     * @return 数组，依次是r，g，b，a
+     */
+    private static int[] hexToRgba(String hex) {
+        int r = 255,g = 255,b = 255,a = 255;
+        if (hex.length() == 7) {
+            r = Integer.valueOf(hex.substring(1,3),16);
+            g = Integer.valueOf(hex.substring(3,5),16);
+            b = Integer.valueOf(hex.substring(5,7),16);
+        }else if(hex.length() == 9){
+            a = Integer.valueOf(hex.substring(1,3),16);
+            r = Integer.valueOf(hex.substring(3,5),16);
+            g = Integer.valueOf(hex.substring(5,7),16);
+            b = Integer.valueOf(hex.substring(7,9),16);
+        }
+        return new int[]{r,g,b,a};
     }
 
     @Override
