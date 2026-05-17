@@ -34,31 +34,22 @@ public class SetBackgroundColor extends JButton implements CComponent{
         this.setBorderPainted(false);
         this.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-                System.out.println("click");
                 if(e.getButton() == MouseClick.LEFT_CLICK.getCode()){
                     mainWindow.setAsBgColor();
                 }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                System.out.println("press");
-            }
+            public void mousePressed(MouseEvent e) {}
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-                System.out.println("release");
-            }
+            public void mouseReleased(MouseEvent e) {}
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-                System.out.println("enter");
-            }
+            public void mouseEntered(MouseEvent e) {}
 
             @Override
-            public void mouseExited(MouseEvent e) {
-                System.out.println("exit");
-            }
+            public void mouseExited(MouseEvent e) {}
         });
     }
 
