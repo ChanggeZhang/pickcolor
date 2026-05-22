@@ -43,7 +43,6 @@ public class ColorParser implements Parser {
      * @return
      */
     public static int forColorAlpha(double alpha) {
-//        return (int)(alpha * 255);
         return (int) Math.round(alpha * 255);
     }
 
