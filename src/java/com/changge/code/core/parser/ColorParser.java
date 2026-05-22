@@ -21,19 +21,30 @@ public class ColorParser implements Parser {
         int alpha = color.getAlpha();
         String copied = "";
         if (alpha != 255) {
-            copied = String.format("rgba(%s, %s, %s, %s)", red,green,blue,alpha);
+            copied = String.format("rgba(%s, %s, %s, %s)", red,green,blue,forShowAlpha(alpha));
         }else{
             copied = String.format("rgb(%s, %s, %s)",red,green,blue);
         }
         return copied + "\r\n#" + toHexString(color);
     }
 
+    /**
+     * hex 转 rgb 四舍五入保留两位小数
+     * @param alpha
+     * @return
+     */
     public static String forShowAlpha(int alpha) {
         return String.format("%.2f",alpha / 255.0);
     }
 
+    /**
+     * alpha 转 hex 就近取整
+     * @param alpha
+     * @return
+     */
     public static int forColorAlpha(double alpha) {
-        return (int)(alpha * 255);
+//        return (int)(alpha * 255);
+        return (int) Math.round(alpha * 255);
     }
 
     public static String toHexString(Color color) {
